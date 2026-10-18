@@ -1,0 +1,111 @@
+.logout-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  color: #172033;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logout-top-bar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e9f0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.logout-brand-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #153b66;
+  letter-spacing: 0.5px;
+}
+
+.logout-close-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.logout-close-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.logout-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.logout-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 24px;
+  padding: 40px 28px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.logout-icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+}
+
+.logout-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #172033;
+  margin: 0 0 8px 0;
+}
+
+.logout-question {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 28px 0;
+  line-height: 1.5;
+}
+
+.logout-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logout-confirm-btn {
+  width: 100%;
+  padding: 13px;
+  font-size: 15px;
+}
+
+.logout-cancel-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #64748b;
+  border: 1.5px solid #e5e9f0;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-cancel-btn:hover {
+  border-color: #cbd5e1;
+  color: #172033;
+}

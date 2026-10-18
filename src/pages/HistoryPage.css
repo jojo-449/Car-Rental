@@ -1,0 +1,161 @@
+/* history page styling */
+.history-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  color: #172033;
+  padding-bottom: 90px;
+}
+
+.history-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e9f0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.history-heading {
+  font-size: 18px;
+  font-weight: 800;
+  color: #172033;
+  margin: 0;
+}
+
+.history-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.history-tabs-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.history-filter-pill {
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid #e5e9f0;
+  background-color: #ffffff;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.history-filter-pill.pill-active {
+  background-color: #3478f6;
+  border-color: #3478f6;
+  color: #ffffff;
+}
+
+.history-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+.history-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 18px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.history-thumbnail {
+  width: 90px;
+  height: 65px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #0b1728;
+  flex-shrink: 0;
+}
+
+.history-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.history-details {
+  flex: 1;
+}
+
+.history-car-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #172033;
+  margin: 0 0 4px 0;
+}
+
+.history-rented-date {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.history-status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 50px;
+}
+
+.badge-returned {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.badge-pending {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+/* statistics summary bar */
+.history-summary-stats {
+  background-color: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 16px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.stat-column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.stat-number {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.stat-blue { color: #3478f6; }
+.stat-red { color: #ef4444; }
+.stat-green { color: #059669; }
+
+.stat-divider {
+  width: 1px;
+  height: 34px;
+  background-color: #e5e9f0;
+}

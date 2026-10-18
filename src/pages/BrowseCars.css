@@ -1,0 +1,171 @@
+/* browse cars styling */
+.browse-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  color: #172033;
+  padding-bottom: 90px;
+}
+
+.browse-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e9f0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.back-icon-btn {
+  background: none;
+  border: none;
+  color: #172033;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.back-icon-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.browse-page-heading {
+  font-size: 18px;
+  font-weight: 800;
+  color: #172033;
+  margin: 0;
+}
+
+.browse-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* search bar */
+.browse-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 16px;
+  padding: 4px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.search-icon {
+  color: #94a3b8;
+  margin-right: 10px;
+}
+
+.search-input {
+  width: 100%;
+  height: 44px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #172033;
+  background: transparent;
+}
+
+.search-clear-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* category pills */
+.category-pills-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.category-pills-row::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  white-space: nowrap;
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1px solid #e5e9f0;
+  background-color: #ffffff;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-pill:hover {
+  border-color: #3478f6;
+  color: #3478f6;
+}
+
+.category-pill.pill-active {
+  background-color: #3478f6;
+  border-color: #3478f6;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(52, 120, 246, 0.3);
+}
+
+.browse-results-count {
+  font-size: 13px;
+  color: #64748b;
+  margin: 14px 0 20px 0;
+}
+
+/* cars grid */
+.browse-cars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.no-cars-found {
+  text-align: center;
+  padding: 50px 20px;
+  color: #64748b;
+}
+
+.reset-filters-btn {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background-color: #3478f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .browse-cars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .browse-content {
+    padding: 16px;
+  }
+  .browse-cars-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
