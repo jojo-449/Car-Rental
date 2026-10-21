@@ -236,8 +236,8 @@ import React, { useState } from 'react';
 import './BrowseCars.css';
 import { carsData } from '../data/carsData';
 
-import { FiArrowLeft, FiSearch, FiHeart, FiArrowRight } from 'react-icons/fi';
-import { FaHeart } from 'react-icons/fa';
+import { FiArrowLeft, FiSearch, FiHeart, FiArrowRight, FiHome, FiClock, FiSettings } from 'react-icons/fi';
+import { FaHeart, FaCar } from 'react-icons/fa';
 
 export default function BrowseCars({
   onNavigate = () => {},
@@ -345,11 +345,19 @@ export default function BrowseCars({
             {filteredCars.map((car) => {
               const isSaved = wishlist.includes(car.id);
               return (
-                <div key={car.id} className="car-card interactive-card">
+                <div
+                  key={car.id}
+                  className="car-card interactive-card"
+                  onClick={() => onNavigate('CarDetails', { car })}
+                  title={`View details for ${car.name}`}
+                >
                   <div className="car-image-container">
                     <img src={car.image} alt={car.name} />
                     <button
-                      onClick={() => onToggleWishlist(car.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleWishlist(car.id);
+                      }}
                       className={`card-wishlist-btn ${isSaved ? 'saved' : ''}`}
                       aria-label="Bookmark car"
                     >
@@ -375,7 +383,10 @@ export default function BrowseCars({
                       <span className="price-cycle">/ day</span>
                     </div>
                     <button
-                      onClick={() => onBookCar(car)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBookCar(car);
+                      }}
                       className="car-book-btn pill-btn"
                     >
                       <span>Book Now</span>
@@ -388,6 +399,37 @@ export default function BrowseCars({
           </div>
         )}
       </main>
+
+      {/* bottom navigation bar */}
+      <footer className="bottom-nav-bar">
+        <div className="bottom-nav-inner">
+          <button onClick={() => onNavigate('Home')} className="nav-tab-btn">
+            <FiHome size={20} />
+            <span>Home</span>
+          </button>
+          <button onClick={() => onNavigate('Wishlist')} className="nav-tab-btn">
+            <div className="tab-icon-wrap">
+              <FiHeart size={20} />
+              {wishlist.length > 0 && <span className="tab-counter-badge">{wishlist.length}</span>}
+            </div>
+            <span>Wishlist</span>
+          </button>
+          <div className="floating-center-tab">
+            <button onClick={() => onNavigate('BrowseCars')} className="center-book-circle" aria-label="Book Car">
+              <FaCar size={22} />
+            </button>
+            <span className="center-tab-label">Book</span>
+          </div>
+          <button onClick={() => onNavigate('History')} className="nav-tab-btn">
+            <FiClock size={20} />
+            <span>History</span>
+          </button>
+          <button onClick={() => onNavigate('Settings')} className="nav-tab-btn">
+            <FiSettings size={20} />
+            <span>Settings</span>
+          </button>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -1,0 +1,391 @@
+/* Car Details & Booking Page */
+.cardetails-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  color: #172033;
+  padding-bottom: 110px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.cardetails-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e9f0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.cardetails-heading {
+  font-size: 17px;
+  font-weight: 800;
+  color: #172033;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 65%;
+}
+
+.cardetails-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Image Showcase */
+.cardetails-hero-image-card {
+  position: relative;
+  width: 100%;
+  height: 290px;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: #0b1728;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.cardetails-hero-image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardetails-category-tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.cardetails-brand-pill {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  color: #153b66;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Details Card */
+.cardetails-main-card {
+  background: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.car-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.car-header-row h1 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #172033;
+  margin: 0 0 6px 0;
+}
+
+.car-header-row .car-tags-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cardetails-price-badge {
+  text-align: right;
+}
+
+.cardetails-price-num {
+  font-size: 24px;
+  font-weight: 900;
+  color: #3478f6;
+}
+
+.cardetails-price-unit {
+  font-size: 12px;
+  color: #64748b;
+  display: block;
+}
+
+/* Specs Row */
+.car-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.spec-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.spec-icon {
+  color: #3478f6;
+  margin-bottom: 4px;
+}
+
+.spec-label {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.spec-value {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #172033;
+}
+
+/* Section Title */
+.cardetails-section-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #172033;
+  margin: 20px 0 12px 0;
+}
+
+/* Features list */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+/* Booking Configuration Card */
+.booking-config-card {
+  background: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.booking-dates-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.booking-date-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.booking-date-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #172033;
+  outline: none;
+}
+
+/* Days duration selector */
+.duration-selector-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+}
+
+.duration-counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.duration-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #172033;
+  transition: all 0.2s;
+}
+
+.duration-btn:hover {
+  background: #3478f6;
+  color: #ffffff;
+  border-color: #3478f6;
+}
+
+.duration-number {
+  font-size: 16px;
+  font-weight: 800;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Protection plans */
+.protection-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.protection-card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.protection-card.selected {
+  border-color: #3478f6;
+  background: #f0f6ff;
+}
+
+.protection-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.protection-radio {
+  accent-color: #3478f6;
+  width: 16px;
+  height: 16px;
+}
+
+.protection-info h5 {
+  margin: 0 0 2px 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.protection-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.protection-price {
+  font-size: 13px;
+  font-weight: 800;
+  color: #172033;
+}
+
+/* Price Breakdown summary */
+.price-breakdown {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.price-row.total {
+  font-size: 16px;
+  font-weight: 900;
+  color: #172033;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+/* Sticky Booking Bottom Bar */
+.cardetails-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #e5e9f0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  padding: 14px 24px;
+  z-index: 80;
+}
+
+.sticky-bar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sticky-price-group h4 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #172033;
+  margin: 0;
+}
+
+.sticky-price-group span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.confirm-booking-btn {
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 800;
+}

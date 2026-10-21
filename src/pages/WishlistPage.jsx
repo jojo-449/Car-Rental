@@ -133,7 +133,12 @@ export default function WishlistPage({
         ) : (
           <div className="wishlist-items-list">
             {savedCarsList.map((car) => (
-              <div key={car.id} className="wishlist-card interactive-card">
+              <div
+                key={car.id}
+                className="wishlist-card interactive-card"
+                onClick={() => onNavigate('CarDetails', { car })}
+                title={`View details for ${car.name}`}
+              >
                 <div className="wishlist-thumbnail">
                   <img src={car.image} alt={car.name} />
                 </div>
@@ -149,14 +154,23 @@ export default function WishlistPage({
                       <span key={t.label} className={`pill-badge ${t.type}`}>{t.label}</span>
                     ))}
                   </div>
-                  <button onClick={() => onBookCar(car)} className="wishlist-view-btn pill-btn">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onBookCar(car);
+                    }}
+                    className="wishlist-view-btn pill-btn"
+                  >
                     <span>Book Now</span>
                     <FiArrowRight size={14} />
                   </button>
                 </div>
 
                 <button
-                  onClick={() => onToggleWishlist(car.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleWishlist(car.id);
+                  }}
                   className="wishlist-remove-btn"
                   aria-label="Remove"
                   title="Remove from wishlist"

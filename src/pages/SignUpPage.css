@@ -1,0 +1,178 @@
+.signup-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.signup-hero-banner {
+  width: 100%;
+  max-width: 440px;
+  height: 190px;
+  border-radius: 24px 24px 0 0;
+  background-image: linear-gradient(180deg, rgba(11, 23, 40, 0.4) 0%, rgba(11, 23, 40, 0.95) 100%),
+    url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+  background-position: center;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.signup-brand-logo-text {
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.signup-hero-text h1 {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0 0 4px 0;
+}
+
+.signup-hero-text p {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.signup-form-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-top: none;
+  border-radius: 0 0 24px 24px;
+  padding: 26px 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.signup-form-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #172033;
+  margin: 0 0 4px 0;
+}
+
+.signup-form-header p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 20px 0;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.signup-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.signup-input-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.signup-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e9f0;
+  border-radius: 12px;
+  padding: 0 14px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+}
+
+.signup-input-wrapper:focus-within {
+  border-color: #3478f6;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(52, 120, 246, 0.12);
+}
+
+.signup-input-icon {
+  color: #94a3b8;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.signup-input {
+  width: 100%;
+  height: 44px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #172033;
+  outline: none;
+}
+
+.password-toggle-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+  margin: 4px 0;
+}
+
+.signup-checkbox {
+  margin-top: 2px;
+  accent-color: #3478f6;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.signup-submit-btn {
+  width: 100%;
+  height: 48px;
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.login-redirect-prompt {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.login-redirect-link {
+  background: none;
+  border: none;
+  color: #3478f6;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.login-redirect-link:hover {
+  text-decoration: underline;
+}

@@ -1073,7 +1073,12 @@ export default function HomePage({
             {featuredCars.map((car) => {
               const isSaved = wishlist.includes(car.id);
               return (
-                <div key={car.id} className="car-card interactive-card">
+                <div
+                  key={car.id}
+                  className="car-card interactive-card"
+                  onClick={() => goToPage('CarDetails', { car })}
+                  title={`View details for ${car.name}`}
+                >
                   <div className="car-image-container">
                     <img src={car.image} alt={car.name} />
                     <button
@@ -1106,7 +1111,10 @@ export default function HomePage({
                       <span className="price-cycle">/ day</span>
                     </div>
                     <button
-                      onClick={() => onBookCar(car)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onBookCar(car);
+                      }}
                       className="car-book-btn pill-btn"
                     >
                       <span>Book Now</span>

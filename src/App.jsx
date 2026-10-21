@@ -1,28 +1,3 @@
-
-// import React, { useState } from 'react';
-// import HomePage from './pages/HomePage';
-// import BrowseCars from './pages/BrowseCars';
-// import WishlistPage from './pages/WishlistPage';
-// import HistoryPage from './pages/HistoryPage';
-// import ProfilePage from './pages/ProfilePage';
-
-// export default function App() {
-//   const [currentPage, setCurrentPage] = useState('Home');
-
-//   return (
-//     <div className="app-root">
-//       {currentPage === 'Home' && <HomePage onNavigate={setCurrentPage} />}
-//       {currentPage === 'BrowseCars' && <BrowseCars onNavigate={setCurrentPage} />}
-//       {currentPage === 'Wishlist' && <WishlistPage onNavigate={setCurrentPage} />}
-//       {currentPage === 'History' && <HistoryPage onNavigate={setCurrentPage} />}
-//       {currentPage === 'Profile' && <ProfilePage onNavigate={setCurrentPage} />}
-//     </div>
-//   );
-// }
-
-
-
-
 import React, { useState } from 'react';
 import HomePage from './pages/HomePage';
 import BrowseCars from './pages/BrowseCars';
@@ -30,7 +5,11 @@ import WishlistPage from './pages/WishlistPage';
 import HistoryPage from './pages/HistoryPage';
 import ProfilePage from './pages/ProfilePage';
 import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 import LogoutPage from './pages/LogoutPage';
+import SettingsPage from './pages/SettingsPage';
+import SupportPage from './pages/SupportPage';
+import CarDetailsPage from './pages/CarDetailsPage';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('Home');
@@ -81,12 +60,12 @@ export default function App() {
   };
 
   // booking action
-  const handleBookCar = (car) => {
-    const newBooking = {
+  const handleBookCar = (car, customBooking = null) => {
+    const newBooking = customBooking || {
       id: Date.now(),
       carName: car.name,
       rentedDate: 'Today',
-      status: 'Pending',
+      status: 'Active',
       image: car.image
     };
     setBookingHistory([newBooking, ...bookingHistory]);
@@ -115,6 +94,16 @@ export default function App() {
         />
       )}
 
+      {currentPage === 'CarDetails' && (
+        <CarDetailsPage
+          car={navParams.car}
+          onNavigate={handleNavigate}
+          wishlist={wishlist}
+          onToggleWishlist={handleToggleWishlist}
+          onBookCar={handleBookCar}
+        />
+      )}
+
       {currentPage === 'Wishlist' && (
         <WishlistPage
           onNavigate={handleNavigate}
@@ -128,15 +117,37 @@ export default function App() {
         <HistoryPage
           onNavigate={handleNavigate}
           bookingHistory={bookingHistory}
+          wishlist={wishlist}
         />
       )}
 
       {currentPage === 'Profile' && (
-        <ProfilePage onNavigate={handleNavigate} />
+        <ProfilePage
+          onNavigate={handleNavigate}
+          wishlist={wishlist}
+        />
+      )}
+
+      {currentPage === 'Settings' && (
+        <SettingsPage
+          onNavigate={handleNavigate}
+          wishlist={wishlist}
+        />
+      )}
+
+      {currentPage === 'Support' && (
+        <SupportPage
+          onNavigate={handleNavigate}
+          wishlist={wishlist}
+        />
       )}
 
       {currentPage === 'Login' && (
         <LoginPage onNavigate={handleNavigate} />
+      )}
+
+      {currentPage === 'SignUp' && (
+        <SignUpPage onNavigate={handleNavigate} />
       )}
 
       {currentPage === 'Logout' && (
