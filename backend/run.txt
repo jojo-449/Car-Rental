@@ -1,0 +1,9 @@
+ python -m venv .venv
+.venv\Scripts\activate.bat 
+OR 
+.venv\Scripts\Activate.ps1
+and
+pip install -r requirements.txt
+
+lastly
+uvicorn main:app --reload
