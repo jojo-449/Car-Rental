@@ -1,4 +1,11 @@
- python -m venv .venv
+# RUN FRONTEND
+cd frontend 
+npm install
+npm run dev
+
+# RUN BACKEND
+cd backend
+python -m venv .venv
 .venv\Scripts\activate.bat 
 OR 
 .venv\Scripts\Activate.ps1
