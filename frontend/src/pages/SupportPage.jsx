@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SupportPage.css';
+import { supportApi, contactApi, pagesApi } from '../api';
+import { useAuth } from '../context/AuthContext';
+import { useToast, ToastView } from '../components/Toast';
 
 import {
   FiArrowLeft,
@@ -9,7 +12,6 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiSearch,
-  FiCheckCircle,
   FiX,
   FiSend,
   FiHome,
@@ -30,35 +32,24 @@ export default function SupportPage({
     { sender: 'bot', text: 'Hello! I am Fast Cars Virtual Assistant. How can I assist you with your rental today?' }
   ]);
   const [chatInput, setChatInput] = useState('');
-  const [toastMessage, setToastMessage] = useState('');
+  const { user } = useAuth();
+  const [toastMessage, triggerToast] = useToast(3000);
+  const [faqs, setFaqs] = useState([]);
+  const [contactInfo, setContactInfo] = useState('');
+  const [chatBusy, setChatBusy] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
   // Ticket form state
+  const [ticketName, setTicketName] = useState('');
+  const [ticketEmail, setTicketEmail] = useState('');
   const [ticketSubject, setTicketSubject] = useState('General Inquiry');
   const [ticketMessage, setTicketMessage] = useState('');
   const [ticketSubmitted, setTicketSubmitted] = useState(false);
 
-  const faqs = [
-    {
-      q: 'What are the requirements to rent a car?',
-      a: 'To rent a vehicle with Fast Cars, you must be at least 21 years old (25 for supercars like Lamborghini or McLaren), hold a valid driving license for at least 1 year, and provide a valid credit/debit card for security verification.'
-    },
-    {
-      q: 'What is included in the rental price?',
-      a: 'All rentals include standard third-party liability insurance, 24/7 roadside assistance, standard mileage allowance (200 miles/day), and complete vehicle cleaning prior to delivery.'
-    },
-    {
-      q: 'Can I cancel or modify my booking?',
-      a: 'Yes, cancellations made up to 24 hours before your scheduled pickup receive a 100% full refund with zero fees. You can view your current bookings in the History tab.'
-    },
-    {
-      q: 'How does vehicle pickup and return work?',
-      a: 'You can choose between contactless express pickup at any of our airport or city hubs, or request VIP doorstep delivery directly to your home or hotel.'
-    },
-    {
-      q: 'What happens if I experience a mechanical breakdown or flat tire?',
-      a: 'Every Fast Cars booking comes with complimentary 24/7 roadside assistance. Tap the red "Call Assistance" button at the top of this page to reach our dispatch team instantly.'
-    }
-  ];
+  useEffect(() => {
+    supportApi.faqs().then((list) => setFaqs(list.map((f) => ({ q: f.question, a: f.answer })))).catch(() => {});
+    pagesApi.get('contactinfo').then((p) => setContactInfo(p.content)).catch(() => {});
+  }, []);
 
   const filteredFaqs = faqs.filter(
     (f) =>
@@ -66,39 +57,45 @@ export default function SupportPage({
       f.a.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const triggerToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3000);
+  const sendChat = async (text) => {
+    if (!text.trim() || chatBusy) return;
+    setChatMessages((prev) => [...prev, { sender: 'user', text }]);
+    setChatInput('');
+    setChatBusy(true);
+    try {
+      const res = await supportApi.ask(text);
+      setChatMessages((prev) => [...prev, { sender: 'bot', text: res.answer }]);
+      setSuggestions(res.suggestions || []);
+    } catch (err) {
+      setChatMessages((prev) => [...prev, { sender: 'bot', text: err.message }]);
+    } finally {
+      setChatBusy(false);
+    }
   };
 
   const handleSendChat = (e) => {
     e.preventDefault();
-    if (!chatInput.trim()) return;
-
-    const userText = chatInput;
-    setChatMessages((prev) => [...prev, { sender: 'user', text: userText }]);
-    setChatInput('');
-
-    // Simulated reply
-    setTimeout(() => {
-      let botResponse = 'Thank you for reaching out! Our rental concierge has received your inquiry and is checking available options for you.';
-      if (userText.toLowerCase().includes('price') || userText.toLowerCase().includes('cost')) {
-        botResponse = 'Our daily rates start from $48/day for standard sedans up to $1,850/day for exotic supercars, with transparent pricing and no hidden fees!';
-      } else if (userText.toLowerCase().includes('license') || userText.toLowerCase().includes('age')) {
-        botResponse = 'You must be at least 21 years old with a valid driving license. Supercars require drivers to be 25+.';
-      }
-      setChatMessages((prev) => [...prev, { sender: 'bot', text: botResponse }]);
-    }, 600);
+    sendChat(chatInput);
   };
 
-  const handleTicketSubmit = (e) => {
+  const handleTicketSubmit = async (e) => {
     e.preventDefault();
-    setTicketSubmitted(true);
-    triggerToast('Support ticket #FC-' + Math.floor(1000 + Math.random() * 9000) + ' created successfully!');
-    setTimeout(() => {
-      setTicketMessage('');
-      setTicketSubmitted(false);
-    }, 2500);
+    try {
+      await contactApi.send({
+        name: user ? user.full_name : ticketName,
+        email: user ? user.email : ticketEmail,
+        phone_number: user?.phone_number || null,
+        message: `[${ticketSubject}] ${ticketMessage}`,
+      });
+      setTicketSubmitted(true);
+      triggerToast('Your request has been sent. We will reply by email.');
+      setTimeout(() => {
+        setTicketMessage('');
+        setTicketSubmitted(false);
+      }, 2500);
+    } catch (err) {
+      triggerToast(err.message);
+    }
   };
 
   return (
@@ -129,7 +126,7 @@ export default function SupportPage({
             </div>
           </div>
           <button
-            onClick={() => triggerToast('Connecting to 24/7 Roadside Assistance: 1-800-555-FAST')}
+            onClick={() => triggerToast(contactInfo || 'Please use the contact form below.')}
             className="call-now-btn"
           >
             <FiPhoneCall size={14} />
@@ -152,13 +149,13 @@ export default function SupportPage({
 
           <div
             className="channel-card"
-            onClick={() => triggerToast('Fast Cars Concierge: +1 (800) 555-3278')}
+            onClick={() => triggerToast(contactInfo || 'Please use the contact form below.')}
           >
             <div className="channel-icon" style={{ background: '#ecfdf5', color: '#10b981' }}>
               <FiPhoneCall size={20} />
             </div>
             <h4 className="channel-title">Call Support</h4>
-            <p className="channel-desc">+1 (800) 555-FAST</p>
+            <p className="channel-desc">See contact details</p>
           </div>
 
           <div
@@ -219,6 +216,18 @@ export default function SupportPage({
           <p>Our concierge team will review your message and reply via email within 2 hours.</p>
 
           <form onSubmit={handleTicketSubmit}>
+            {!user && (
+              <>
+                <div className="ticket-form-group">
+                  <label>Your Name</label>
+                  <input className="ticket-select" required value={ticketName} onChange={(e) => setTicketName(e.target.value)} />
+                </div>
+                <div className="ticket-form-group">
+                  <label>Email</label>
+                  <input className="ticket-select" type="email" required value={ticketEmail} onChange={(e) => setTicketEmail(e.target.value)} />
+                </div>
+              </>
+            )}
             <div className="ticket-form-group">
               <label>Subject</label>
               <select
@@ -279,10 +288,19 @@ export default function SupportPage({
 
             <div className="chat-messages-area">
               {chatMessages.map((msg, i) => (
-                <div key={i} className={`chat-bubble ${msg.sender}`}>
+                <div key={i} className={`chat-bubble ${msg.sender}`} style={{ whiteSpace: 'pre-line' }}>
                   {msg.text}
                 </div>
               ))}
+              {suggestions.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {suggestions.map((sg) => (
+                    <button key={sg} type="button" onClick={() => sendChat(sg)} style={{ border: '1px solid #3478f6', background: '#fff', color: '#3478f6', borderRadius: 999, padding: '4px 10px', fontSize: 12, cursor: 'pointer' }}>
+                      {sg}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <form onSubmit={handleSendChat} className="chat-input-row">
@@ -300,29 +318,7 @@ export default function SupportPage({
         </div>
       )}
 
-      {/* Toast Feedback */}
-      {toastMessage && (
-        <div style={{
-          position: 'fixed',
-          bottom: '80px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: '#1e293b',
-          color: '#ffffff',
-          padding: '10px 18px',
-          borderRadius: '30px',
-          fontSize: '13px',
-          fontWeight: '600',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          zIndex: '999',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
-        }}>
-          <FiCheckCircle size={16} color="#10b981" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+      <ToastView message={toastMessage} />
 
       {/* Bottom Navigation */}
       <footer className="bottom-nav-bar">

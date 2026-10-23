@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Literal, Optional
 from pydantic import BaseModel, ConfigDict
 
 from schemas.car import CarResponse
@@ -18,7 +18,7 @@ class BookingCreate(BookingBase):
 
 
 class BookingStatusUpdate(BaseModel):
-    status: str  # Pending, Confirmed, Cancelled
+    status: Literal["Pending", "Confirmed", "Cancelled", "Active", "Returned"]
 
 
 class BookingResponse(BookingBase):

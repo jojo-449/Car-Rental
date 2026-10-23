@@ -30,6 +30,19 @@ def create_booking(booking_in: BookingCreate, current_user: User = Depends(get_c
     if booking_in.to_date < booking_in.from_date:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Return date cannot be before start date")
 
+    overlap = (
+        db.query(Booking)
+        .filter(
+            Booking.car_id == car.id,
+            Booking.status.notin_(["Cancelled", "Returned"]),
+            Booking.from_date < booking_in.to_date,
+            Booking.to_date > booking_in.from_date,
+        )
+        .first()
+    )
+    if overlap:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This car is already booked for the selected dates")
+
     rental_days = max(1, math.ceil((booking_in.to_date - booking_in.from_date).total_seconds() / 86400))
     booking = Booking(
         user_id=current_user.id,

@@ -71,7 +71,7 @@ car_rental/
 │   ├── support.py
 │   └── page.py
 ├── routers/              # API Route Handlers
-│   ├── auth.py           # Register, login, profile, change password
+│   ├── auth.py           # Register, login, profile, change password, recover password
 │   ├── categories.py     # Explore by Category endpoints
 │   ├── brands.py         # Top Brands listing & admin CRUD
 │   ├── cars.py           # Fleet search, filters, featured & slider cars

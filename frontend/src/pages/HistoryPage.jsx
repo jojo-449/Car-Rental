@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './HistoryPage.css';
+import { bookingsApi } from '../api';
+import { adaptCar, formatDate, formatMoney } from '../utils/cars';
+import { useToast, ToastView } from '../components/Toast';
 
 // standard icons
 import {
@@ -13,20 +16,58 @@ import { FaCar } from 'react-icons/fa';
 
 export default function HistoryPage({
   onNavigate = () => {},
-  bookingHistory = [],
   wishlist = []
 }) {
   const [selectedFilter, setSelectedFilter] = useState('All');
+  const [bookings, setBookings] = useState([]);
+  const [metrics, setMetrics] = useState({ total_rented: 0, returned: 0, yet_to_return: 0, pending: 0 });
+  const [loading, setLoading] = useState(true);
+  const [toastMessage, showToast] = useToast();
 
-  // filter bookings
+  const load = useCallback(() => {
+    bookingsApi
+      .history()
+      .then((res) => {
+        setBookings(res.bookings);
+        setMetrics(res.metrics);
+      })
+      .catch((e) => showToast(e.message))
+      .finally(() => setLoading(false));
+  }, [showToast]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const cancelBooking = async (id) => {
+    try {
+      await bookingsApi.cancel(id);
+      showToast('Booking cancelled');
+      load();
+    } catch (e) {
+      showToast(e.message);
+    }
+  };
+
+  const bookingHistory = bookings.map((b) => ({
+    id: b.id,
+    carId: b.car_id,
+    carName: b.car?.title || 'Vehicle',
+    rentedDate: `${formatDate(b.from_date)} – ${formatDate(b.to_date)}`,
+    status: b.status,
+    total: b.total_cost,
+    image: b.car ? adaptCar(b.car).image : '',
+  }));
+
   const filteredHistory = bookingHistory.filter((item) => {
     if (selectedFilter === 'All') return true;
+    if (selectedFilter === 'Pending') return ['pending', 'confirmed', 'active'].includes(item.status.toLowerCase());
     return item.status.toLowerCase() === selectedFilter.toLowerCase();
   });
 
-  const totalCount = bookingHistory.length;
-  const returnedCount = bookingHistory.filter((b) => b.status === 'Returned').length;
-  const pendingCount = bookingHistory.filter((b) => b.status === 'Pending' || b.status === 'Active').length;
+  const totalCount = metrics.total_rented;
+  const returnedCount = metrics.returned;
+  const pendingCount = metrics.pending + metrics.yet_to_return;
 
   return (
     <div className="history-page-wrapper" style={{ paddingBottom: '140px' }}>
@@ -66,7 +107,9 @@ export default function HistoryPage({
         </div>
 
         {/* bookings list */}
-        {filteredHistory.length === 0 ? (
+        {loading ? (
+          <p style={{ textAlign: 'center', color: '#64748b' }}>Loading bookings…</p>
+        ) : filteredHistory.length === 0 ? (
           <div style={{
             background: '#ffffff',
             borderRadius: '16px',
@@ -96,6 +139,15 @@ export default function HistoryPage({
                 <div className="history-details">
                   <h3 className="history-car-name">{item.carName}</h3>
                   <span className="history-rented-date">Rented: {item.rentedDate}</span>
+                  {item.total != null && <span className="history-rented-date">Total: {formatMoney(item.total)}</span>}
+                  {['Pending', 'Confirmed'].includes(item.status) && (
+                    <button
+                      onClick={() => cancelBooking(item.id)}
+                      style={{ marginTop: 6, background: 'none', border: 'none', color: '#DC2626', fontSize: 12, cursor: 'pointer', padding: 0 }}
+                    >
+                      Cancel booking
+                    </button>
+                  )}
                 </div>
 
                 <span className={`history-status-badge ${item.status === 'Returned' ? 'badge-returned' : 'badge-pending'}`}>
@@ -124,6 +176,8 @@ export default function HistoryPage({
           </div>
         </div>
       </main>
+
+      <ToastView message={toastMessage} />
 
       {/* bottom navigation bar */}
       <footer className="bottom-nav-bar">

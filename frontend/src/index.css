@@ -1,0 +1,17 @@
+/* One font for the whole app. Change --font-main to restyle everything,
+   e.g. 'Poppins', sans-serif (after loading it in index.html). */
+:root {
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+}

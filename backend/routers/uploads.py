@@ -20,6 +20,8 @@ def upload_image(
     """Upload an image file (cars, brands, avatars, categories)."""
     # Sanitize folder name
     clean_folder = "".join(c for c in folder if c.isalnum() or c in ("-", "_"))
+    if clean_folder != "avatars" and not current_user.is_admin:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only admins can upload to this folder")
     target_dir = os.path.join(UPLOAD_DIR, clean_folder)
     os.makedirs(target_dir, exist_ok=True)
 

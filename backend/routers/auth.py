@@ -9,6 +9,7 @@ from schemas.user import (
     UserResponse,
     UserUpdate,
     UserPasswordChange,
+    PasswordRecovery,
     Token,
 )
 from core.security import hash_password, verify_password, create_access_token
@@ -105,3 +106,25 @@ def change_password(
     current_user.password_hash = hash_password(pwd_data.new_password)
     db.commit()
     return {"message": "Password updated successfully"}
+
+
+def _digits(value: str) -> str:
+    return "".join(c for c in (value or "") if c.isdigit())
+
+
+@router.post("/recover-password")
+def recover_password(data: PasswordRecovery, db: Session = Depends(get_db)):
+    """Recover a password by proving ownership of the registered email and phone number."""
+    user = db.query(User).filter(User.email == data.email).first()
+    if (
+        not user
+        or not user.phone_number
+        or _digits(user.phone_number) != _digits(data.phone_number)
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The email and phone number do not match a registered account",
+        )
+    user.password_hash = hash_password(data.new_password)
+    db.commit()
+    return {"message": "Password reset successfully"}

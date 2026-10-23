@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './ProfilePage.css';
+import { authApi } from '../api';
+import { uploadImage, assetUrl } from '../api/client';
+import { useAuth } from '../context/AuthContext';
+import { formatDate } from '../utils/cars';
+import { useToast, ToastView } from '../components/Toast';
 
 // standard react-icons
 import {
@@ -7,7 +12,6 @@ import {
   FiEdit3,
   FiCheck,
   FiX,
-  FiCheckCircle,
   FiHome,
   FiHeart,
   FiClock,
@@ -19,29 +23,52 @@ export default function ProfilePage({
   onNavigate = () => {},
   wishlist = []
 }) {
-  const [user, setUser] = useState({
-    name: 'Joy Jenna',
-    email: 'joy.jenna@gmail.com',
-    phone: '+234 801 234 5678',
-    country: 'Nigeria',
-    memberSince: '12 Jan 2025',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
-  });
+  const { user: account, setUser: setAccount } = useAuth();
+  const user = {
+    name: account.full_name,
+    email: account.email,
+    phone: account.phone_number || '',
+    country: account.country || '',
+    memberSince: formatDate(account.created_at),
+    avatar: assetUrl(account.avatar_url),
+  };
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ ...user });
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, triggerToast] = useToast(2500);
+  const [saving, setSaving] = useState(false);
+  const fileRef = useRef(null);
 
-  const triggerToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 2500);
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const updated = await authApi.updateProfile({
+        full_name: formData.name,
+        phone_number: formData.phone,
+        country: formData.country,
+      });
+      setAccount(updated);
+      setIsEditing(false);
+      triggerToast('Profile updated successfully');
+    } catch (err) {
+      triggerToast(err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    setUser({ ...formData });
-    setIsEditing(false);
-    triggerToast('Profile updated successfully');
+  const handleAvatar = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const { url } = await uploadImage(file, 'avatars');
+      const updated = await authApi.updateProfile({ avatar_url: url });
+      setAccount(updated);
+      triggerToast('Profile photo updated');
+    } catch (err) {
+      triggerToast(err.message);
+    }
   };
 
   return (
@@ -63,7 +90,14 @@ export default function ProfilePage({
         {/* avatar and user card */}
         <div className="profile-header-card">
           <div className="avatar-wrapper">
-            <img src={user.avatar} alt={user.name} className="profile-avatar-img" />
+            {user.avatar ? (
+              <img src={user.avatar} alt={user.name} className="profile-avatar-img" />
+            ) : (
+              <div className="profile-avatar-img" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#3478F6', color: '#fff', fontSize: 36, fontWeight: 700 }}>
+                {user.name?.[0]?.toUpperCase()}
+              </div>
+            )}
+            <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleAvatar} />
             <div className="verified-badge" title="Verified Customer">
               <FiCheck size={12} color="#ffffff" />
             </div>
@@ -71,6 +105,13 @@ export default function ProfilePage({
 
           <h2 className="profile-user-name">{user.name}</h2>
           <p className="profile-user-email">{user.email}</p>
+
+          <button
+            onClick={() => fileRef.current?.click()}
+            style={{ background: 'none', border: 'none', color: '#3478F6', fontSize: 13, cursor: 'pointer', marginBottom: 8 }}
+          >
+            Change photo
+          </button>
 
           <button
             onClick={() => {
@@ -148,10 +189,11 @@ export default function ProfilePage({
                 <label>Email Address</label>
                 <input
                   type="email"
-                  required
+                  disabled
+                  title="Email cannot be changed"
                   className="modal-input"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={() => {}}
                 />
               </div>
 
@@ -177,37 +219,15 @@ export default function ProfilePage({
                 />
               </div>
 
-              <button type="submit" className="pill-btn modal-save-btn">
-                Save Changes
+              <button type="submit" disabled={saving} className="pill-btn modal-save-btn">
+                {saving ? 'Saving…' : 'Save Changes'}
               </button>
             </form>
           </div>
         </div>
       )}
 
-      {/* Toast Feedback */}
-      {toastMessage && (
-        <div style={{
-          position: 'fixed',
-          bottom: '80px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: '#1e293b',
-          color: '#ffffff',
-          padding: '10px 18px',
-          borderRadius: '30px',
-          fontSize: '13px',
-          fontWeight: '600',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          zIndex: '999',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
-        }}>
-          <FiCheckCircle size={16} color="#10b981" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+      <ToastView message={toastMessage} />
 
       {/* bottom navigation bar */}
       <footer className="bottom-nav-bar">

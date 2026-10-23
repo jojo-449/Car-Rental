@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import './SignUpPage.css';
-import { FiUser, FiMail, FiPhone, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import { useAuth } from '../context/AuthContext';
+import { FiUser, FiMail, FiPhone, FiLock, FiEye, FiEyeOff, FiMapPin, FiArrowLeft } from 'react-icons/fi';
 
-export default function SignUpPage({ onNavigate = () => {} }) {
+export default function SignUpPage({ onNavigate = () => {}, onRegistered = () => {} }) {
+  const { register } = useAuth();
+  const [country, setCountry] = useState('');
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,21 +15,37 @@ export default function SignUpPage({ onNavigate = () => {} }) {
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!agreeTerms) {
-      alert('Please agree to the Terms of Service to create an account.');
+      setError('Please agree to the Terms of Service to create an account.');
       return;
     }
-    // Simulate successful registration and navigate home
-    onNavigate('Home');
+    setSubmitting(true);
+    setError('');
+    try {
+      await register({ full_name: fullName, email, phone_number: phone, country: country || null, password });
+      onRegistered();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="signup-page-wrapper">
       {/* Hero Visual Card */}
       <div className="signup-hero-banner">
-        <div className="signup-brand-header">
+        <div className="signup-brand-header" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            type="button"
+            onClick={() => onNavigate('Home')}
+            aria-label="Back to Home"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.18)', color: '#fff', cursor: 'pointer' }}
+          >
+            <FiArrowLeft size={20} />
+          </button>
           <span className="signup-brand-logo-text">FAST CARS</span>
         </div>
         <div className="signup-hero-text">
@@ -89,6 +110,21 @@ export default function SignUpPage({ onNavigate = () => {} }) {
             </div>
           </div>
 
+          {/* Country */}
+          <div className="signup-input-group">
+            <label className="signup-input-label">Country</label>
+            <div className="signup-input-wrapper">
+              <FiMapPin size={18} className="signup-input-icon" />
+              <input
+                type="text"
+                placeholder="e.g. Nigeria"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="signup-input"
+              />
+            </div>
+          </div>
+
           {/* Password */}
           <div className="signup-input-group">
             <label className="signup-input-label">Password</label>
@@ -100,7 +136,7 @@ export default function SignUpPage({ onNavigate = () => {} }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={8}
                 className="signup-input"
               />
               <button
@@ -124,13 +160,16 @@ export default function SignUpPage({ onNavigate = () => {} }) {
               className="signup-checkbox"
             />
             <label htmlFor="terms">
-              I agree to Fast Cars Terms of Service, Privacy Policy, and Insurance Agreement.
+              I agree to the{' '}
+              <a href="/page/terms" target="_blank" rel="noreferrer">Terms</a> and{' '}
+              <a href="/page/privacy" target="_blank" rel="noreferrer">Privacy Policy</a>.
             </label>
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className="pill-btn signup-submit-btn">
-            Create Free Account
+          {error && <p role="alert" style={{ color: '#DC2626', fontSize: 13, margin: '0 0 10px' }}>{error}</p>}
+          <button type="submit" disabled={submitting} className="pill-btn signup-submit-btn">
+            {submitting ? 'Creating account…' : 'Create Free Account'}
           </button>
         </form>
 
