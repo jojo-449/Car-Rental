@@ -6,6 +6,13 @@ A robust, modular, and secure RESTful backend API for **FAST CARS** car rental s
 
 ## Quick Start
 
+### 0. Create your `.env`
+`.env` is not in git. Copy the example and adjust it if needed:
+```bash
+cp .env.example .env
+```
+`DATABASE_URL` defaults to a local SQLite file (`database.db`), created and seeded on first start. Add your frontend address to `ALLOWED_ORIGINS` (e.g. `http://localhost:5173`).
+
 ### 1. Run Database Seeder (Optional - runs automatically on startup)
 To populate starter brands, categories, sample cars, and admin accounts:
 ```bash
