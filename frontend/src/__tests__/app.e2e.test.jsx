@@ -90,7 +90,7 @@ describe('customer', () => {
     await user.click(await screen.findByRole('button', { name: /Confirm & Reserve/ }));
     expect(await screen.findByText('Booking History')).toBeTruthy();
     await user.click(await screen.findByText('Cancel booking'));
-    expect(await screen.findByText('Cancelled')).toBeTruthy();
+    expect((await screen.findAllByText('Cancelled')).length).toBeGreaterThan(0);
   });
 
   it('rejects bad credentials', async () => {

@@ -22,14 +22,18 @@ import {
   FiLogOut,
   FiMessageSquare,
   FiMail,
-  FiShield
+  FiShield,
+  FiCalendar,
+  FiZap,
+  FiCopy,
+  FiCheck
 } from 'react-icons/fi';
-import { FaHeart, FaCar } from 'react-icons/fa';
+import { FaHeart, FaCar, FaStar, FaUserCheck } from 'react-icons/fa';
 
 // clean vector logo for the top nav and sidebar
 const FastCarsLogo = ({ isDark = false }) => (
   <div className="brand-logo-wrap">
-    <svg className="brand-logo-svg" viewBox="0 0 74 32" fill="none">
+    <svg className="brand-logo-svg" viewBox="0 0 74 32" fill="none" aria-hidden="true">
       <path
         d="M6 22C16 10 32 4 48 4C58 4 64 8 68 12"
         stroke="#3478F6"
@@ -51,13 +55,109 @@ const FastCarsLogo = ({ isDark = false }) => (
   </div>
 );
 
+// High-fidelity vector emblems for top car brands (eliminates broken images and duplicate text)
+function BrandEmblem({ name, logoUrl }) {
+  const brand = (name || '').toLowerCase();
+
+  if (brand.includes('mercedes')) {
+    return (
+      <svg viewBox="0 0 40 40" className="brand-svg-emblem" aria-hidden="true">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" strokeWidth="2.4" />
+        <path
+          d="M20 5 L20 20 L7.8 27 L20 20 L32.2 27 Z"
+          fill="currentColor"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (brand.includes('bmw')) {
+    return (
+      <svg viewBox="0 0 40 40" className="brand-svg-emblem" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" fill="#111827" stroke="#94A3B8" strokeWidth="1.5" />
+        <circle cx="20" cy="20" r="13" fill="#FFFFFF" />
+        <path d="M20 7 A13 13 0 0 1 33 20 L20 20 Z" fill="#0066B1" />
+        <path d="M20 20 L7 20 A13 13 0 0 1 20 7 Z" fill="#FFFFFF" />
+        <path d="M20 20 L33 20 A13 13 0 0 1 20 33 Z" fill="#FFFFFF" />
+        <path d="M20 20 L20 33 A13 13 0 0 1 7 20 Z" fill="#0066B1" />
+        <circle cx="20" cy="20" r="13" fill="none" stroke="#111827" strokeWidth="0.8" />
+      </svg>
+    );
+  }
+
+  if (brand.includes('audi')) {
+    return (
+      <svg viewBox="0 0 52 24" className="brand-svg-emblem" aria-hidden="true" style={{ width: 44, height: 20 }}>
+        <circle cx="11" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.2" />
+        <circle cx="21" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.2" />
+        <circle cx="31" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.2" />
+        <circle cx="41" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.2" />
+      </svg>
+    );
+  }
+
+  if (brand.includes('porsche')) {
+    return (
+      <svg viewBox="0 0 36 44" className="brand-svg-emblem" aria-hidden="true">
+        <path d="M6 4 L30 4 L30 24 C30 34 20 40 18 41 C16 40 6 34 6 24 Z" fill="#C5A059" stroke="#9A7B38" strokeWidth="1.5" />
+        <path d="M10 8 L26 8 L26 22 C26 30 18 35 18 35 C18 35 10 30 10 22 Z" fill="#1C1C1C" />
+        <path d="M12 11 L17 11 L17 21 L12 21 Z" fill="#C8102E" />
+        <path d="M19 11 L24 11 L24 21 L19 21 Z" fill="#C5A059" />
+      </svg>
+    );
+  }
+
+  if (brand.includes('lamborghini')) {
+    return (
+      <svg viewBox="0 0 38 44" className="brand-svg-emblem" aria-hidden="true">
+        <path d="M19 2 L35 7 L31 34 L19 42 L7 34 L3 7 Z" fill="#1A1A1A" stroke="#E5B242" strokeWidth="2" />
+        <path d="M19 12 L25 18 L22 22 L26 25 L21 28 L19 25 L16 28 L12 24 L16 21 L13 18 Z" fill="#E5B242" />
+      </svg>
+    );
+  }
+
+  if (brand.includes('maserati')) {
+    return (
+      <svg viewBox="0 0 36 40" className="brand-svg-emblem" aria-hidden="true">
+        <path
+          d="M18 4 L18 36 M18 4 L14 10 L16 18 M18 4 L22 10 L20 18 M11 10 L8 14 L11 20 M25 10 L28 14 L25 20 M8 20 C10 26 26 26 28 20 L28 22 C28 28 8 28 8 22 Z"
+          fill="none"
+          stroke="#C8102E"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <ellipse cx="18" cy="34" rx="5" ry="2" fill="#153B66" />
+      </svg>
+    );
+  }
+
+  if (brand.includes('honda')) {
+    return (
+      <svg viewBox="0 0 38 34" className="brand-svg-emblem" aria-hidden="true">
+        <rect x="3" y="3" width="32" height="28" rx="6" fill="none" stroke="currentColor" strokeWidth="2.4" />
+        <path d="M10 8 L14 26 L17 26 L17 19 L21 19 L21 26 L24 26 L28 8 L23.5 8 L21.5 16 L16.5 16 L14.5 8 Z" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (logoUrl) {
+    return <img src={assetUrl(logoUrl)} alt="" aria-hidden="true" style={{ width: 26, height: 26, objectFit: 'contain' }} />;
+  }
+
+  return <FaCar size={22} aria-hidden="true" />;
+}
+
 export default function HomePage({
   onNavigate = () => {},
   wishlist = [],
   onToggleWishlist = () => {},
   onBookCar = () => {}
 }) {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, login } = useAuth();
   const [toastMessage, showToast] = useToast();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [sliderCars, setSliderCars] = useState([]);
@@ -68,6 +168,8 @@ export default function HomePage({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('Home');
   const [slideIndex, setSlideIndex] = useState(0);
+  const [copiedKey, setCopiedKey] = useState('');
+  const [demoLoading, setDemoLoading] = useState('');
 
   useEffect(() => {
     carsApi.slider().then((c) => setSliderCars(c.map(adaptCar))).catch(() => {});
@@ -97,6 +199,9 @@ export default function HomePage({
         description: car.raw?.overview || car.overview || 'Twin-turbo engine delivering high performance with luxury comfort.',
         bgImage: car.image,
         carName: car.name,
+        price: car.price || 120,
+        transmission: car.raw?.transmission || 'Automatic',
+        power: car.raw?.power || '503 HP'
       }))
     : [
         {
@@ -106,6 +211,9 @@ export default function HomePage({
           description: 'Twin-turbo V8 engine delivering high performance with luxury comfort.',
           bgImage: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1400&q=80',
           carName: 'Mercedes-Benz C63',
+          price: 120,
+          transmission: 'Automatic',
+          power: '503 HP'
         },
         {
           id: 2,
@@ -114,6 +222,9 @@ export default function HomePage({
           description: 'Naturally aspirated V10 supercar engineered to thrill at top speeds.',
           bgImage: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1400&q=80',
           carName: 'Lamborghini Huracán',
+          price: 450,
+          transmission: 'Automatic',
+          power: '640 HP'
         },
         {
           id: 3,
@@ -122,6 +233,9 @@ export default function HomePage({
           description: 'Twin-turbo inline-6 delivering 503 HP with race-tuned dynamics.',
           bgImage: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1400&q=80',
           carName: 'BMW M4 Competition',
+          price: 150,
+          transmission: 'Automatic',
+          power: '503 HP'
         },
         {
           id: 4,
@@ -130,6 +244,9 @@ export default function HomePage({
           description: 'Twin-turbo flat-six launching 0-60 in 2.6 seconds of unbridled adrenaline.',
           bgImage: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=80',
           carName: 'Porsche 911 Turbo S',
+          price: 420,
+          transmission: 'Automatic',
+          power: '640 HP'
         },
         {
           id: 5,
@@ -138,6 +255,9 @@ export default function HomePage({
           description: 'Italian craftsmanship meets twin-turbocharged racing heritage.',
           bgImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80',
           carName: 'Maserati Ghibli Trofeo',
+          price: 210,
+          transmission: 'Automatic',
+          power: '580 HP'
         },
         {
           id: 6,
@@ -146,7 +266,10 @@ export default function HomePage({
           description: 'Handcrafted AMG 4.0L V8 biturbo engine with active aerodynamics.',
           bgImage: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1400&q=80',
           carName: 'Mercedes-AMG GT Coupe',
-        },
+          price: 350,
+          transmission: 'Automatic',
+          power: '577 HP'
+        }
       ];
 
   const handleSubscribe = async (e) => {
@@ -160,6 +283,30 @@ export default function HomePage({
     }
   };
 
+  const handleCopyText = (text, key) => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(text);
+      setCopiedKey(key);
+      showToast(`Copied ${text}`);
+      setTimeout(() => setCopiedKey(''), 2000);
+    }
+  };
+
+  const handleQuickDemoLogin = async (email, password, role) => {
+    setDemoLoading(role);
+    try {
+      await login(email, password);
+      showToast(`Logged in as ${role === 'admin' ? 'Administrator' : 'Joy Jenna'}!`);
+      if (role === 'admin') {
+        goToPage('Admin');
+      }
+    } catch (err) {
+      showToast(err.message || 'Quick login failed');
+    } finally {
+      setDemoLoading('');
+    }
+  };
+
   // lock background scroll when sidebar drawer is open
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
@@ -168,11 +315,11 @@ export default function HomePage({
     };
   }, [isMenuOpen]);
 
-  // timer to auto change hero slide every 3 seconds
+  // timer to auto change hero slide every 4.5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setSlideIndex((prev) => (prev + 1) % heroSlides.length);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
@@ -226,7 +373,7 @@ export default function HomePage({
               { name: 'Help & Support', page: 'Support', icon: FiHelpCircle },
               { name: 'Testimonials', page: 'Testimonials', icon: FiMessageSquare },
               { name: 'Contact Us', page: 'Contact', icon: FiMail },
-              ...(isAdmin ? [{ name: 'Admin Panel', page: 'Admin', icon: FiShield }] : []),
+              ...(isAdmin ? [{ name: 'Admin Panel', page: 'Admin', icon: FiShield }] : [])
             ].map((link) => {
               const Icon = link.icon;
               const isSelected = activeTab === link.page;
@@ -294,7 +441,7 @@ export default function HomePage({
             {user ? (
               <div className="user-profile-pill" onClick={() => goToPage('Profile')}>
                 {user.avatar_url ? (
-                  <img src={assetUrl(user.avatar_url)} alt={user.full_name} className="user-avatar-img" />
+                  <img src={assetUrl(user.avatar_url)} alt="" className="user-avatar-img" />
                 ) : (
                   <span className="user-avatar-img" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#3478F6', color: '#fff', fontWeight: 700 }}>
                     {user.full_name?.[0]?.toUpperCase()}
@@ -304,7 +451,7 @@ export default function HomePage({
                 <FiChevronDown size={15} className="user-dropdown-arrow" />
               </div>
             ) : (
-              <button className="user-profile-pill" onClick={() => goToPage('Login')}>
+              <button className="user-profile-pill user-login-cta" onClick={() => goToPage('Login')}>
                 <FiUser size={16} />
                 <span className="user-profile-name">Log In</span>
               </button>
@@ -315,7 +462,7 @@ export default function HomePage({
 
       {/* main content */}
       <main className="content-container">
-        {/* Slideshow "Book Now" leads to BrowseCars */}
+        {/* Slideshow Hero Section */}
         <section className="hero-slideshow">
           <div
             className="hero-background-img"
@@ -324,17 +471,49 @@ export default function HomePage({
           <div className="hero-dark-overlay" />
 
           <div className="hero-text-content">
-            <span className="hero-small-tag">{currentSlide.tag}</span>
+            <div className="hero-pill-row">
+              <span className="hero-small-tag">{currentSlide.tag}</span>
+              {currentSlide.carName && (
+                <span className="hero-car-model-tag">✦ {currentSlide.carName}</span>
+              )}
+            </div>
+
             <h1 className="hero-main-title">{currentSlide.title}</h1>
             <p className="hero-subtext">{currentSlide.description}</p>
 
-            <button
-              onClick={() => (currentSlide.car ? goToPage('CarDetails', { car: currentSlide.car }) : goToPage('BrowseCars'))}
-              className="hero-action-btn pill-btn"
-            >
-              <span>Book Now</span>
-              <FiArrowRight size={16} />
-            </button>
+            {/* Quick Hero Performance Specs Bar */}
+            <div className="hero-specs-row">
+              <div className="hero-spec-pill">
+                <span className="spec-label">Daily Rate</span>
+                <strong className="spec-val">${currentSlide.price}</strong>
+              </div>
+              <div className="hero-spec-pill">
+                <span className="spec-label">Gearbox</span>
+                <strong className="spec-val">{currentSlide.transmission}</strong>
+              </div>
+              <div className="hero-spec-pill">
+                <span className="spec-label">Protection</span>
+                <strong className="spec-val">Full Coverage</strong>
+              </div>
+            </div>
+
+            <div className="hero-actions-group">
+              <button
+                onClick={() => (currentSlide.car ? onBookCar(currentSlide.car) : goToPage('BrowseCars'))}
+                className="hero-action-btn pill-btn"
+              >
+                <span>Book Now</span>
+                <FiArrowRight size={16} />
+              </button>
+              {currentSlide.car && (
+                <button
+                  onClick={() => goToPage('CarDetails', { car: currentSlide.car })}
+                  className="hero-secondary-btn pill-btn"
+                >
+                  <span>View Details</span>
+                </button>
+              )}
+            </div>
           </div>
 
           <button onClick={handlePrev} className="slide-arrow arrow-left" aria-label="Previous">
@@ -359,7 +538,10 @@ export default function HomePage({
         {/* Explore Categories: "View All" leads to BrowseCars */}
         <section className="page-section">
           <div className="section-title-row">
-            <h2 className="section-heading">Explore by Category</h2>
+            <div>
+              <h2 className="section-heading">Explore by Category</h2>
+              <p className="section-subheading">Hand-selected luxury, supercar & sport collections</p>
+            </div>
             <button onClick={() => goToPage('BrowseCars')} className="view-all-link">
               <span>View All</span>
               <FiArrowRight size={14} />
@@ -374,14 +556,15 @@ export default function HomePage({
                 onClick={() => goToPage('BrowseCars', { category_id: item.id })}
               >
                 <div className="category-image-box">
-                  <img src={assetUrl(item.image_url)} alt={item.name} />
+                  <img src={assetUrl(item.image_url)} alt="" aria-hidden="true" />
+                  <span className="category-overlay-tag">Fleet</span>
                 </div>
                 <div className="category-bottom-bar">
                   <div className="category-text">
                     <h3>{item.name}</h3>
                     <p>{item.description}</p>
                   </div>
-                  <button className="circle-arrow-btn" aria-label="Explore">
+                  <button className="circle-arrow-btn" aria-label={`Explore ${item.name}`}>
                     <FiArrowRight size={16} />
                   </button>
                 </div>
@@ -393,7 +576,14 @@ export default function HomePage({
         {/* Top Brands: Arrow leads to BrowseCars; Clicking a logo opens that brand's cars */}
         <section className="page-section">
           <div className="section-title-row brand-title-row">
-            <h2 className="section-heading">Top Brands</h2>
+            <div>
+              <h2 className="section-heading">Top Brands</h2>
+              <p className="section-subheading">World-class automotive engineering</p>
+            </div>
+            <button onClick={() => goToPage('BrowseCars')} className="view-all-link">
+              <span>All Brands</span>
+              <FiArrowRight size={14} />
+            </button>
           </div>
 
           <div className="brands-horizontal-scroll">
@@ -406,11 +596,7 @@ export default function HomePage({
                   title={`View ${b.name} cars`}
                 >
                   <div className="brand-logo-frame">
-                    {b.logo_url ? (
-                      <img src={assetUrl(b.logo_url)} alt={b.name} style={{ width: 26, height: 26, objectFit: 'contain' }} />
-                    ) : (
-                      <FaCar size={22} />
-                    )}
+                    <BrandEmblem name={b.name} logoUrl={b.logo_url} />
                   </div>
                   <span className="brand-title">{b.name}</span>
                 </div>
@@ -430,7 +616,10 @@ export default function HomePage({
         {/* Featured Cars: "View All" leads to BrowseCars */}
         <section className="page-section">
           <div className="section-title-row">
-            <h2 className="section-heading">Featured Cars</h2>
+            <div>
+              <h2 className="section-heading">Featured Cars</h2>
+              <p className="section-subheading">Ready for instant reservation today</p>
+            </div>
             <button onClick={() => goToPage('BrowseCars')} className="view-all-link">
               <span>View All</span>
               <FiArrowRight size={14} />
@@ -448,7 +637,7 @@ export default function HomePage({
                   title={`View details for ${car.name}`}
                 >
                   <div className="car-image-container">
-                    <img src={car.image} alt={car.name} />
+                    <img src={car.image} alt="" aria-hidden="true" />
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -499,18 +688,36 @@ export default function HomePage({
         {testimonials.length > 0 && (
           <section className="page-section">
             <div className="section-title-row">
-              <h2 className="section-heading">What Our Customers Say</h2>
+              <div>
+                <h2 className="section-heading">What Our Customers Say</h2>
+                <p className="section-subheading">Verified experiences from real drivers</p>
+              </div>
               <button onClick={() => goToPage('Testimonials')} className="view-all-link">
                 <span>View All</span>
                 <FiArrowRight size={14} />
               </button>
             </div>
-            <div className="brands-horizontal-scroll">
-              <div className="brands-track" style={{ alignItems: 'stretch' }}>
+            <div className="testimonials-track-container">
+              <div className="testimonials-track">
                 {testimonials.slice(0, 5).map((t) => (
-                  <div key={t.id} className="brand-pill-card" style={{ flexDirection: 'column', alignItems: 'flex-start', minWidth: 260, maxWidth: 280, whiteSpace: 'normal', gap: 8, padding: 16 }}>
-                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>“{t.content}”</p>
-                    <strong style={{ fontSize: 13 }}>{t.user?.full_name || 'Customer'}</strong>
+                  <div key={t.id} className="testimonial-card-v2 interactive-card">
+                    <div className="testimonial-stars-row">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar key={i} color="#F59E0B" size={14} />
+                      ))}
+                    </div>
+                    <p className="testimonial-quote">“{t.content}”</p>
+                    <div className="testimonial-author-row">
+                      <div className="author-avatar-circle">
+                        {t.user?.full_name ? t.user.full_name[0].toUpperCase() : 'C'}
+                      </div>
+                      <div className="author-meta">
+                        <strong className="author-name">{t.user?.full_name || 'Joy Jenna'}</strong>
+                        <span className="author-verified">
+                          <FaUserCheck size={11} color="#10B981" /> Verified Renter
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -518,60 +725,220 @@ export default function HomePage({
           </section>
         )}
 
-        {/* Quick guide */}
-        <section className="page-section">
+        {/* How It Works: Visual 4-Step Process */}
+        <section className="page-section how-it-works-section">
           <div className="section-title-row">
-            <h2 className="section-heading">How it works</h2>
+            <div>
+              <h2 className="section-heading">How it works</h2>
+              <p className="section-subheading">Effortless luxury car rental from start to finish</p>
+            </div>
           </div>
-          <div style={{ fontSize: 14, lineHeight: 1.7, color: '#334155' }}>
-            <p style={{ margin: '0 0 10px' }}>
-              You can look around the site without an account. Browse the cars, read the reviews and send us a
-              message from the Contact page whenever you like.
-            </p>
-            <p style={{ margin: '0 0 10px' }}>
-              <strong>To register:</strong> press Log In at the top, then Sign Up. Fill in your name, email, phone number
-              and a password of at least 8 characters, then tick the terms box. You are logged in straight away.
-            </p>
-            <p style={{ margin: '0 0 10px' }}>
-              <strong>To book a car:</strong> open a car, pick your pickup and return dates, and press Reserve. We confirm it
-              and you can follow it under Booking History, where you can also cancel it. Tap the heart on any car to
-              save it to your wishlist.
-            </p>
-            <p style={{ margin: '0 0 10px' }}>
-              <strong>Forgot your password?</strong> On the login page press "Forgot password", then enter the email and
-              phone number you registered with, and choose a new one.
-            </p>
-            <p style={{ margin: 0 }}>
-              <strong>Want to try it out?</strong> There are two test accounts. Customer: joy.jenna@gmail.com with
-              password CustomerPassword123. Admin: admin@fastcars.com with password AdminPassword123 (the admin account
-              also gets an Admin Panel link in the menu).
-            </p>
+
+          <div className="how-it-works-grid">
+            <div className="how-step-card interactive-card">
+              <div className="step-header-row">
+                <div className="step-number-badge">01</div>
+                <div className="step-icon-wrap">
+                  <FaCar size={20} color="#3478F6" />
+                </div>
+              </div>
+              <h3 className="step-title">Browse & Choose</h3>
+              <p className="step-desc">
+                Explore our fleet with no account needed. View detailed performance specs, transparent pricing, and customer reviews.
+              </p>
+            </div>
+
+            <div className="how-step-card interactive-card">
+              <div className="step-header-row">
+                <div className="step-number-badge">02</div>
+                <div className="step-icon-wrap">
+                  <FiCalendar size={20} color="#3478F6" />
+                </div>
+              </div>
+              <h3 className="step-title">Select Dates</h3>
+              <p className="step-desc">
+                Pick your pickup and return dates with guaranteed real-time availability and transparent, all-inclusive daily rates.
+              </p>
+            </div>
+
+            <div className="how-step-card interactive-card">
+              <div className="step-header-row">
+                <div className="step-number-badge">03</div>
+                <div className="step-icon-wrap">
+                  <FiShield size={20} color="#3478F6" />
+                </div>
+              </div>
+              <h3 className="step-title">Instant Reserve</h3>
+              <p className="step-desc">
+                Register in 30 seconds or log in to confirm. Track active bookings and manage cancellations directly in Booking History.
+              </p>
+            </div>
+
+            <div className="how-step-card interactive-card">
+              <div className="step-header-row">
+                <div className="step-number-badge">04</div>
+                <div className="step-icon-wrap">
+                  <FiZap size={20} color="#3478F6" />
+                </div>
+              </div>
+              <h3 className="step-title">Enjoy the Drive</h3>
+              <p className="step-desc">
+                Pick up your spotless, fully insured vehicle with 24/7 VIP concierge and emergency roadside assistance included.
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Demo Access Card */}
+          <div className="demo-credentials-banner">
+            <div className="demo-banner-header">
+              <div className="demo-badge">QUICK TEST ACCESS</div>
+              <h3 className="demo-banner-title">Try Fast Cars with One Click</h3>
+              <p className="demo-banner-sub">
+                Explore the platform instantly using our pre-configured customer or fleet administrator accounts.
+              </p>
+            </div>
+
+            <div className="demo-accounts-grid">
+              {/* Customer Account */}
+              <div className="demo-account-card">
+                <div className="demo-role-tag customer-tag">Customer Account</div>
+                <div className="demo-field-row">
+                  <span className="demo-label">Email:</span>
+                  <code className="demo-code">joy.jenna@gmail.com</code>
+                  <button
+                    type="button"
+                    className="demo-copy-btn"
+                    onClick={() => handleCopyText('joy.jenna@gmail.com', 'cust-email')}
+                    title="Copy email"
+                  >
+                    {copiedKey === 'cust-email' ? <FiCheck size={14} color="#10B981" /> : <FiCopy size={14} />}
+                  </button>
+                </div>
+                <div className="demo-field-row">
+                  <span className="demo-label">Password:</span>
+                  <code className="demo-code">CustomerPassword123</code>
+                  <button
+                    type="button"
+                    className="demo-copy-btn"
+                    onClick={() => handleCopyText('CustomerPassword123', 'cust-pass')}
+                    title="Copy password"
+                  >
+                    {copiedKey === 'cust-pass' ? <FiCheck size={14} color="#10B981" /> : <FiCopy size={14} />}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="demo-login-btn pill-btn"
+                  disabled={demoLoading === 'customer'}
+                  onClick={() => handleQuickDemoLogin('joy.jenna@gmail.com', 'CustomerPassword123', 'customer')}
+                >
+                  <span>{demoLoading === 'customer' ? 'Signing in...' : 'Sign In as Joy Jenna'}</span>
+                  <FiArrowRight size={14} />
+                </button>
+              </div>
+
+              {/* Admin Account */}
+              <div className="demo-account-card admin-highlight">
+                <div className="demo-role-tag admin-tag">Admin & Fleet Manager</div>
+                <div className="demo-field-row">
+                  <span className="demo-label">Email:</span>
+                  <code className="demo-code">admin@fastcars.com</code>
+                  <button
+                    type="button"
+                    className="demo-copy-btn"
+                    onClick={() => handleCopyText('admin@fastcars.com', 'admin-email')}
+                    title="Copy email"
+                  >
+                    {copiedKey === 'admin-email' ? <FiCheck size={14} color="#10B981" /> : <FiCopy size={14} />}
+                  </button>
+                </div>
+                <div className="demo-field-row">
+                  <span className="demo-label">Password:</span>
+                  <code className="demo-code">AdminPassword123</code>
+                  <button
+                    type="button"
+                    className="demo-copy-btn"
+                    onClick={() => handleCopyText('AdminPassword123', 'admin-pass')}
+                    title="Copy password"
+                  >
+                    {copiedKey === 'admin-pass' ? <FiCheck size={14} color="#10B981" /> : <FiCopy size={14} />}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="demo-login-btn admin-btn pill-btn"
+                  disabled={demoLoading === 'admin'}
+                  onClick={() => handleQuickDemoLogin('admin@fastcars.com', 'AdminPassword123', 'admin')}
+                >
+                  <span>{demoLoading === 'admin' ? 'Signing in...' : 'Sign In as Admin'}</span>
+                  <FiShield size={14} />
+                </button>
+              </div>
+            </div>
+
+            <div className="demo-footer-note">
+              <span>Forgot your password?</span> On the login page, tap &ldquo;Forgot password&rdquo; and enter your registered email and phone number to reset.
+            </div>
           </div>
         </section>
 
-        {/* Newsletter */}
-        <section className="page-section">
-          <div className="section-title-row">
-            <h2 className="section-heading">Stay in the loop</h2>
+        {/* Newsletter & Luxury Trust Footer */}
+        <section className="page-section newsletter-section">
+          <div className="newsletter-lux-card">
+            <div className="newsletter-text-col">
+              <span className="newsletter-small-tag">VIP PERKS & UPDATES</span>
+              <h2 className="newsletter-heading">Stay in the loop</h2>
+              <p className="newsletter-sub">
+                Subscribe for private supercar drops, weekend specials, and zero-deposit member privileges.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubscribe} className="newsletter-form-inline">
+              <input
+                type="email"
+                required
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="newsletter-lux-input"
+              />
+              <button type="submit" className="newsletter-lux-btn pill-btn">
+                <span>Subscribe</span>
+                <FiArrowRight size={15} />
+              </button>
+            </form>
           </div>
-          <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <input
-              type="email"
-              required
-              value={newsletterEmail}
-              onChange={(e) => setNewsletterEmail(e.target.value)}
-              placeholder="Your email for offers & news"
-              style={{ flex: '1 1 220px', padding: '12px 16px', borderRadius: 999, border: '1px solid #E2E8F0', fontSize: 14 }}
-            />
-            <button type="submit" className="hero-action-btn pill-btn">
-              <span>Subscribe</span>
-            </button>
-          </form>
-          <div style={{ display: 'flex', gap: 16, marginTop: 20, fontSize: 13, flexWrap: 'wrap' }}>
-            <button className="view-all-link" onClick={() => goToPage('Page', { type: 'aboutus' })}>About Us</button>
-            <button className="view-all-link" onClick={() => goToPage('Page', { type: 'terms' })}>Terms</button>
-            <button className="view-all-link" onClick={() => goToPage('Page', { type: 'privacy' })}>Privacy</button>
-            <button className="view-all-link" onClick={() => goToPage('Contact')}>Contact Us</button>
+
+          {/* Trust Guarantees Bar */}
+          <div className="trust-guarantees-bar">
+            <div className="trust-item">
+              <FiShield size={18} color="#3478F6" />
+              <span>Full Comprehensive Insurance</span>
+            </div>
+            <div className="trust-item">
+              <FiZap size={18} color="#3478F6" />
+              <span>Instant Confirmation</span>
+            </div>
+            <div className="trust-item">
+              <FiClock size={18} color="#3478F6" />
+              <span>24/7 Roadside Concierge</span>
+            </div>
+          </div>
+
+          {/* Footer Navigation Links */}
+          <div className="homepage-footer-nav">
+            <button className="footer-nav-link" onClick={() => goToPage('Page', { type: 'aboutus' })}>About Us</button>
+            <span className="footer-nav-dot">•</span>
+            <button className="footer-nav-link" onClick={() => goToPage('Page', { type: 'terms' })}>Terms</button>
+            <span className="footer-nav-dot">•</span>
+            <button className="footer-nav-link" onClick={() => goToPage('Page', { type: 'privacy' })}>Privacy</button>
+            <span className="footer-nav-dot">•</span>
+            <button className="footer-nav-link" onClick={() => goToPage('Contact')}>Contact Us</button>
+            <span className="footer-nav-dot">•</span>
+            <button className="footer-nav-link" onClick={() => goToPage('Support')}>Help & Support</button>
+          </div>
+          <div className="homepage-copyright">
+            © 2026 Fast Cars Luxury Fleet. All rights reserved.
           </div>
         </section>
       </main>
