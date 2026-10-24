@@ -25,7 +25,7 @@ uv run python main.py
 ```
 Or using uvicorn directly:
 ```bash
-uv run uvicorn main:app --reload --port 8080
+uv run uvicorn main:app --reload --port 8080   # the CLI ignores .env, so pass --port
 ```
 
 The server will start at `http://localhost:8080`.

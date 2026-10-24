@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=True)
 
     DATABASE_URL: str = "sqlite:///./database.db"
+    HOST: str = "0.0.0.0"
+    PORT: int = 8080
     API_PREFIX: str = "/api"
     DEBUG: bool = False
     SECRET_KEY: str = "fastcars-super-secure-secret-key-2026"
