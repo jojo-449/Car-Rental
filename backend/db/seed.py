@@ -96,6 +96,7 @@ def seed_database():
             ("Lamborghini", "https://www.car-logos.org/wp-content/uploads/2011/09/lamborghini.png"),
             ("Maserati", "https://www.car-logos.org/wp-content/uploads/2011/09/maserati.png"),
             ("Audi", "https://www.car-logos.org/wp-content/uploads/2011/09/audi.png"),
+            ("Porsche", "https://www.car-logos.org/wp-content/uploads/2011/09/porsche.png"),
         ]
 
         brand_map = {}
@@ -173,16 +174,16 @@ def seed_database():
             {
                 "brand_id": brand_map["BMW"].id,
                 "category_id": category_map["sport-cars"].id,
-                "title": "BMW M4",
-                "overview": "Pure driving dynamics, aggressive styling, and track-proven agility.",
+                "title": "BMW M4 Competition",
+                "overview": "Twin-turbo inline-6 delivering 503 HP with race-tuned dynamics.",
                 "price_per_day": 150.0,
                 "fuel_type": "Petrol",
                 "model_year": 2024,
                 "seating_capacity": 4,
                 "transmission": "Automatic",
-                "image_url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80",
-                "is_featured": False,
-                "is_slider": False,
+                "image_url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80",
+                "is_featured": True,
+                "is_slider": True,
                 "air_conditioner": True,
                 "power_steering": True,
                 "anti_lock_braking": True,
@@ -192,16 +193,16 @@ def seed_database():
             {
                 "brand_id": brand_map["Audi"].id,
                 "category_id": category_map["sport-cars"].id,
-                "title": "Audi RS7",
+                "title": "Audi RS7 Sportback",
                 "overview": "Four-door coupe with executive prestige and heart-pounding acceleration.",
                 "price_per_day": 180.0,
                 "fuel_type": "Petrol",
                 "model_year": 2024,
                 "seating_capacity": 5,
                 "transmission": "Automatic",
-                "image_url": "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&q=80",
-                "is_featured": False,
-                "is_slider": False,
+                "image_url": "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80",
+                "is_featured": True,
+                "is_slider": True,
                 "air_conditioner": True,
                 "power_steering": True,
                 "anti_lock_braking": True,
@@ -210,20 +211,58 @@ def seed_database():
             {
                 "brand_id": brand_map["Maserati"].id,
                 "category_id": category_map["fast-cars"].id,
-                "title": "Maserati Ghibli",
+                "title": "Maserati Ghibli Trofeo",
                 "overview": "Italian craftsmanship meets twin-turbocharged racing heritage.",
                 "price_per_day": 220.0,
                 "fuel_type": "Petrol",
                 "model_year": 2024,
                 "seating_capacity": 5,
                 "transmission": "Automatic",
-                "image_url": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
-                "is_featured": False,
-                "is_slider": False,
+                "image_url": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
+                "is_featured": True,
+                "is_slider": True,
                 "air_conditioner": True,
                 "power_steering": True,
                 "anti_lock_braking": True,
                 "leather_seats": True,
+            },
+            {
+                "brand_id": brand_map["Porsche"].id,
+                "category_id": category_map["fast-cars"].id,
+                "title": "Porsche 911 Turbo S",
+                "overview": "Twin-turbo flat-six launching 0-60 in 2.6 seconds of unbridled adrenaline.",
+                "price_per_day": 380.0,
+                "fuel_type": "Petrol",
+                "model_year": 2024,
+                "seating_capacity": 4,
+                "transmission": "Automatic",
+                "image_url": "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80",
+                "is_featured": True,
+                "is_slider": True,
+                "air_conditioner": True,
+                "power_steering": True,
+                "anti_lock_braking": True,
+                "leather_seats": True,
+                "driver_airbag": True,
+            },
+            {
+                "brand_id": brand_map["Mercedes-Benz"].id,
+                "category_id": category_map["sport-cars"].id,
+                "title": "Mercedes-AMG GT Coupe",
+                "overview": "Handcrafted AMG 4.0L V8 biturbo engine with active aerodynamics.",
+                "price_per_day": 320.0,
+                "fuel_type": "Petrol",
+                "model_year": 2024,
+                "seating_capacity": 2,
+                "transmission": "Automatic",
+                "image_url": "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80",
+                "is_featured": True,
+                "is_slider": True,
+                "air_conditioner": True,
+                "power_steering": True,
+                "anti_lock_braking": True,
+                "leather_seats": True,
+                "driver_airbag": True,
             },
         ]
 
@@ -233,8 +272,11 @@ def seed_database():
             if not existing:
                 existing = Car(**c)
                 db.add(existing)
-                db.commit()
-                db.refresh(existing)
+            else:
+                for k, v in c.items():
+                    setattr(existing, k, v)
+            db.commit()
+            db.refresh(existing)
             car_map[c["title"]] = existing
 
         # 6. Wishlist for Joy Jenna (Lamborghini Huracan, Mercedes-Benz C63, BMW M4)

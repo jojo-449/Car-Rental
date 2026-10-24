@@ -77,25 +77,75 @@ export default function HomePage({
     testimonialsApi.list().then(setTestimonials).catch(() => {});
   }, []);
 
+  const slideTitles = [
+    'Drive the\nExtraordinary',
+    'Unleash True\nPerformance',
+    'Precision Meets\nSpeed',
+    'Pure Adrenaline\n& Control',
+    'Italian Luxury\n& Heritage',
+    'Sculpted for\nHigh Velocity',
+    'Command the\nOpen Road'
+  ];
+
   // hero slides come from the cars flagged is_slider
   const heroSlides = sliderCars.length
     ? sliderCars.map((car, i) => ({
         id: car.id,
         car,
-        tag: car.category ? car.category.toUpperCase() : 'RENT PREMIUM',
-        title: i % 2 === 0 ? 'Drive the\nExtraordinary' : 'Unleash True\nPerformance',
-        description: car.raw.overview || 'Get the best cars at the best rates. Fast, secure and reliable.',
+        tag: car.category ? car.category.toUpperCase() : 'SPORT CARS',
+        title: slideTitles[i % slideTitles.length],
+        description: car.raw?.overview || car.overview || 'Twin-turbo engine delivering high performance with luxury comfort.',
         bgImage: car.image,
         carName: car.name,
       }))
     : [
         {
-          id: 0,
-          tag: 'RENT PREMIUM',
+          id: 1,
+          tag: 'SPORT CARS',
           title: 'Drive the\nExtraordinary',
-          description: 'Get the best cars at the best rates. Fast, secure and reliable.',
+          description: 'Twin-turbo V8 engine delivering high performance with luxury comfort.',
+          bgImage: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1400&q=80',
+          carName: 'Mercedes-Benz C63',
+        },
+        {
+          id: 2,
+          tag: 'FAST CARS',
+          title: 'Unleash True\nPerformance',
+          description: 'Naturally aspirated V10 supercar engineered to thrill at top speeds.',
+          bgImage: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1400&q=80',
+          carName: 'Lamborghini Huracán',
+        },
+        {
+          id: 3,
+          tag: 'SPORT CARS',
+          title: 'Precision Meets\nSpeed',
+          description: 'Twin-turbo inline-6 delivering 503 HP with race-tuned dynamics.',
+          bgImage: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1400&q=80',
+          carName: 'BMW M4 Competition',
+        },
+        {
+          id: 4,
+          tag: 'FAST CARS',
+          title: 'Pure Adrenaline\n& Control',
+          description: 'Twin-turbo flat-six launching 0-60 in 2.6 seconds of unbridled adrenaline.',
+          bgImage: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1400&q=80',
+          carName: 'Porsche 911 Turbo S',
+        },
+        {
+          id: 5,
+          tag: 'SPORT CARS',
+          title: 'Italian Luxury\n& Heritage',
+          description: 'Italian craftsmanship meets twin-turbocharged racing heritage.',
+          bgImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80',
+          carName: 'Maserati Ghibli Trofeo',
+        },
+        {
+          id: 6,
+          tag: 'FAST CARS',
+          title: 'Sculpted for\nHigh Velocity',
+          description: 'Handcrafted AMG 4.0L V8 biturbo engine with active aerodynamics.',
           bgImage: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1400&q=80',
-          carName: '',
+          carName: 'Mercedes-AMG GT Coupe',
         },
       ];
 
